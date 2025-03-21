@@ -80,15 +80,18 @@
 
       // E-mail naar jou + klant
       emailjs.send("service_j45k2jm", "template_fqb0p8s", {
-        klant_naam: naam,
-        klant_email: email,
-        producten: producten,
-        totaal: totaal
+  to_email: "Econelybox@gmail.com", // Ontvanger (jij)
+  klant_naam: naam,
+  klant_email: email,
+  producten: producten,
+  totaal: totaal
+});
       }).then(function() {
         // Redirect naar Rabobank betaalverzoek
         window.location.href = "https://betaalverzoek.rabobank.nl/betaalverzoek/?id=BJrL5SCVSL-xpRA6BtgHoA";
-      }, function(error) {
-        alert("Er ging iets mis met verzenden: " + error);
+}, function(error) {
+    console.error("EmailJS Fout:", error);
+    alert("Er ging iets mis. Open de browser console (F12) voor details.");
       });
     });
   </script>
