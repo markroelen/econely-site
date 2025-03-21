@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <title>Econely Productselectie</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 30px; }
+    .product { margin-bottom: 10px; }
+    .totaal { margin-top: 20px; font-size: 1.2em; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h1>Kies je producten</h1>
+  
+  <div class="product">
+    <label>
+      <input type="checkbox" class="product-checkbox" data-price="5.99">
+      Theefilter (€5,99)
+    </label>
+  </div>
+  
+  <div class="product">
+    <label>
+      <input type="checkbox" class="product-checkbox" data-price="7.49">
+      Food hugger (€7,49)
+    </label>
+  </div>
+  
+  <div class="product">
+    <label>
+      <input type="checkbox" class="product-checkbox" data-price="3.99">
+      Rietjes van glas (€3,99)
+    </label>
+  </div>
+
+  <div class="product">
+    <label>
+      <input type="checkbox" class="product-checkbox" data-price="9.99">
+      Bamboe bestekset (€9,99)
+    </label>
+  </div>
+
+  <div class="totaal">
+    Totale prijs: €<span id="totaalbedrag">0.00</span>
+  </div>
+
+  <script>
+    const checkboxes = document.querySelectorAll('.product-checkbox');
+    const totaalbedrag = document.getElementById('totaalbedrag');
+
+    checkboxes.forEach(checkbox => {
+      checkbox.addEventListener('change', () => {
+        let totaal = 0;
+        checkboxes.forEach(cb => {
+          if (cb.checked) {
+            totaal += parseFloat(cb.dataset.price);
+          }
+        });
+        totaalbedrag.textContent = totaal.toFixed(2);
+      });
+    });
+  </script>
+</body>
+</html>
