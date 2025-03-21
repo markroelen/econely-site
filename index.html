@@ -80,7 +80,7 @@
 
       // E-mail naar jou + klant
       emailjs.send("service_j45k2jm", "template_fqb0p8s", {
-  to_email: "Econelybox@gmail.com", // Ontvanger (jij)
+  email: email,  // Dit moet overeenkomen met {{email}} in EmailJS!
   klant_naam: naam,
   klant_email: email,
   producten: producten,
