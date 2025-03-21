@@ -2,61 +2,93 @@
 <html lang="nl">
 <head>
   <meta charset="UTF-8">
-  <title>Econely Productselectie</title>
+  <title>Econely Bestellen</title>
+  <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
   <style>
     body { font-family: Arial, sans-serif; margin: 30px; }
     .product { margin-bottom: 10px; }
     .totaal { margin-top: 20px; font-size: 1.2em; font-weight: bold; }
+    form { margin-top: 20px; }
+    input[type=text], input[type=email] { padding: 5px; width: 300px; margin-bottom: 10px; display: block; }
+    button { padding: 10px 20px; font-size: 1em; }
   </style>
 </head>
 <body>
-  <h1>Kies je producten</h1>
-  
-  <div class="product">
-    <label>
-      <input type="checkbox" class="product-checkbox" data-price="5.99">
-      Theefilter (€5,99)
-    </label>
-  </div>
-  
-  <div class="product">
-    <label>
-      <input type="checkbox" class="product-checkbox" data-price="7.49">
-      Food hugger (€7,49)
-    </label>
-  </div>
-  
-  <div class="product">
-    <label>
-      <input type="checkbox" class="product-checkbox" data-price="3.99">
-      Rietjes van glas (€3,99)
-    </label>
-  </div>
+  <h1>Stel je Econely-box samen</h1>
 
   <div class="product">
-    <label>
-      <input type="checkbox" class="product-checkbox" data-price="9.99">
-      Bamboe bestekset (€9,99)
-    </label>
+    <label><input type="checkbox" class="product-checkbox" data-price="5.99"> Theefilter (€5,99)</label>
+  </div>
+  <div class="product">
+    <label><input type="checkbox" class="product-checkbox" data-price="7.49"> Food hugger (€7,49)</label>
+  </div>
+  <div class="product">
+    <label><input type="checkbox" class="product-checkbox" data-price="3.99"> Rietjes van glas (€3,99)</label>
+  </div>
+  <div class="product">
+    <label><input type="checkbox" class="product-checkbox" data-price="9.99"> Bamboe bestekset (€9,99)</label>
   </div>
 
-  <div class="totaal">
-    Totale prijs: €<span id="totaalbedrag">0.00</span>
-  </div>
+  <div class="totaal">Totale prijs: €<span id="totaalbedrag">0.00</span></div>
+
+  <form id="bestelform">
+    <label>Naam:<br><input type="text" id="klantNaam" required></label>
+    <label>Emailadres:<br><input type="email" id="klantEmail" required></label>
+    <button type="submit">Bestel via Rabobank</button>
+  </form>
 
   <script>
+    emailjs.init("MhuF0ixcPAn5Zu4xY"); // <-- Vul dit later in
+
     const checkboxes = document.querySelectorAll('.product-checkbox');
     const totaalbedrag = document.getElementById('totaalbedrag');
+    const form = document.getElementById('bestelform');
+
+    function getBesteldeProducten() {
+      let producten = [];
+      checkboxes.forEach(cb => {
+        if (cb.checked) {
+          producten.push(cb.parentElement.textContent.trim());
+        }
+      });
+      return producten.join(', ');
+    }
+
+    function getTotaal() {
+      let totaal = 0;
+      checkboxes.forEach(cb => {
+        if (cb.checked) {
+          totaal += parseFloat(cb.dataset.price);
+        }
+      });
+      return totaal.toFixed(2);
+    }
 
     checkboxes.forEach(checkbox => {
       checkbox.addEventListener('change', () => {
-        let totaal = 0;
-        checkboxes.forEach(cb => {
-          if (cb.checked) {
-            totaal += parseFloat(cb.dataset.price);
-          }
-        });
-        totaalbedrag.textContent = totaal.toFixed(2);
+        totaalbedrag.textContent = getTotaal();
+      });
+    });
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const naam = document.getElementById('klantNaam').value;
+      const email = document.getElementById('klantEmail').value;
+      const producten = getBesteldeProducten();
+      const totaal = getTotaal();
+
+      // E-mail naar jou + klant
+      emailjs.send("service_j45k2jm", "template_fqb0p8s", {
+        klant_naam: naam,
+        klant_email: email,
+        producten: producten,
+        totaal: totaal
+      }).then(function() {
+        // Redirect naar Rabobank betaalverzoek
+        window.location.href = "https://betaalverzoek.rabobank.nl/betaalverzoek/?id=BJrL5SCVSL-xpRA6BtgHoA";
+      }, function(error) {
+        alert("Er ging iets mis met verzenden: " + error);
       });
     });
   </script>
