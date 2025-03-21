@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <title>Econely Bestellen</title>
-  <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
   <style>
     body { font-family: Arial, sans-serif; margin: 30px; }
     .product { margin-bottom: 10px; }
@@ -31,18 +30,23 @@
 
   <div class="totaal">Totale prijs: €<span id="totaalbedrag">0.00</span></div>
 
-  <form id="bestelform">
-    <label>Naam:<br><input type="text" id="klantNaam" required></label>
-    <label>Emailadres:<br><input type="email" id="klantEmail" required></label>
+  <form id="bestelform" action="https://formsubmit.co/econelybox@gmail.com" method="POST">
+    <input type="hidden" name="_subject" value="Nieuwe Econely Bestelling">
+    <input type="hidden" name="_captcha" value="false">
+    
+    <label>Naam:<br><input type="text" name="naam" id="klantNaam" required></label>
+    <label>Emailadres:<br><input type="email" name="email" id="klantEmail" required></label>
+    <input type="hidden" name="producten" id="productenInput">
+    <input type="hidden" name="totaal" id="totaalInput">
     <button type="submit">Bestel via Rabobank</button>
   </form>
 
   <script>
-    emailjs.init("auEhzJXASpC313sCN-i");
-
     const checkboxes = document.querySelectorAll('.product-checkbox');
     const totaalbedrag = document.getElementById('totaalbedrag');
     const form = document.getElementById('bestelform');
+    const productenInput = document.getElementById('productenInput');
+    const totaalInput = document.getElementById('totaalInput');
 
     function getBesteldeProducten() {
       let producten = [];
@@ -71,47 +75,17 @@
     });
 
     form.addEventListener('submit', function(e) {
-      e.preventDefault();
-
-      const naam = document.getElementById('klantNaam').value;
-      const email = document.getElementById('klantEmail').value;
       const producten = getBesteldeProducten();
       const totaal = getTotaal();
       
       if (totaal <= 0) {
         alert("Selecteer minstens één product om te bestellen.");
+        e.preventDefault();
         return;
       }
       
-      const betaalLink = "https://betaalverzoek.rabobank.nl/betaalverzoek/?id=BJrL5SCVSL-xpRA6BtgHoA";
-
-      console.log("Verzenden met EmailJS:", {
-        service_id: "service_j45k2jm",
-        template_id: "template_fqb0p8s",
-        public_key: "auEhzJXASpC313sCN-i",
-        to_email: email,
-        klant_naam: naam,
-        klant_email: email,
-        producten: producten,
-        totaal: totaal
-      });
-
-      emailjs.send("service_j45k2jm", "template_fqb0p8s", {
-        to_email: email,
-        klant_naam: naam,
-        klant_email: email,
-        producten: producten,
-        totaal: totaal
-      }).then(function(response) {
-        console.log("✅ Email verzonden!", response);
-        setTimeout(() => { 
-          window.location.href = betaalLink; 
-        }, 2000);
-      }).catch(function(error) {
-        console.error("❌ EmailJS Fout:", error);
-        alert("Er ging iets mis met de e-mail. Controleer de console (F12) voor details. Als het blijft misgaan, bestel dan direct via de Rabobank-betaallink.");
-        window.location.href = betaalLink;
-      });
+      productenInput.value = producten;
+      totaalInput.value = "€" + totaal;
     });
   </script>
 </body>
