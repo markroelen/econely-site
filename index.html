@@ -86,12 +86,21 @@
       const betaalLink = "https://betaalverzoek.rabobank.nl/betaalverzoek/?id=BJrL5SCVSL-xpRA6BtgHoA";
 
       emailjs.send("service_j45k2jm", "template_fqb0p8s", {
-        email: email,
-        klant_naam: naam,
-        klant_email: email,
-        producten: producten,
-        totaal: totaal
-      }).then(function(response) {
+  email: email,
+  klant_naam: naam,
+  klant_email: email,
+  producten: producten,
+  totaal: totaal
+}).then(function(response) {
+  console.log("Email verzonden!", response);
+  setTimeout(() => { 
+    window.location.href = "https://betaalverzoek.rabobank.nl/betaalverzoek/?id=BJrL5SCVSL-xpRA6BtgHoA"; 
+  }, 2000);
+}, function(error) {
+  console.error("EmailJS Fout:", error);
+  alert("Er ging iets mis met de e-mail. Controleer de console (F12) voor details.");
+});
+.then(function(response) {
         console.log("Email verzonden!", response);
         window.location.href = betaalLink;
       }, function(error) {
