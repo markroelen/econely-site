@@ -14,7 +14,7 @@
   </style>
 </head>
 <body>
-  <h1>Stel je Econely samen</h1>
+  <h1>Stel je Econely-box samen</h1>
 
   <div class="product">
     <label><input type="checkbox" class="product-checkbox" data-price="5.99"> Theefilter (€5,99)</label>
@@ -85,8 +85,16 @@
       
       const betaalLink = "https://betaalverzoek.rabobank.nl/betaalverzoek/?id=BJrL5SCVSL-xpRA6BtgHoA";
 
+      console.log("Verzenden met EmailJS:", {
+        email: email,
+        klant_naam: naam,
+        klant_email: email,
+        producten: producten,
+        totaal: totaal
+      });
+
       emailjs.send("service_j45k2jm", "template_fqb0p8s", {
-        to_email: email,  // Dit moet exact overeenkomen met je EmailJS template
+        email: email,  // Correcte veldnaam in EmailJS template
         klant_naam: naam,
         klant_email: email,
         producten: producten,
