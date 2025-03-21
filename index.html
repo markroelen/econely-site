@@ -86,7 +86,10 @@
       const betaalLink = "https://betaalverzoek.rabobank.nl/betaalverzoek/?id=BJrL5SCVSL-xpRA6BtgHoA";
 
       console.log("Verzenden met EmailJS:", {
-        to_email: email,  // Correcte veldnaam uit EmailJS template
+        service_id: "service_j45k2jm",
+        template_id: "template_fqb0p8s",
+        public_key: "auEhzJXASpC313sCN-i",
+        to_email: email,
         klant_naam: naam,
         klant_email: email,
         producten: producten,
@@ -94,19 +97,20 @@
       });
 
       emailjs.send("service_j45k2jm", "template_fqb0p8s", {
-        to_email: email,  // Correcte veldnaam uit EmailJS template
+        to_email: email,
         klant_naam: naam,
         klant_email: email,
         producten: producten,
         totaal: totaal
       }).then(function(response) {
-        console.log("Email verzonden!", response);
+        console.log("✅ Email verzonden!", response);
         setTimeout(() => { 
           window.location.href = betaalLink; 
         }, 2000);
       }).catch(function(error) {
-        console.error("EmailJS Fout:", error);
-        alert("Er ging iets mis met de e-mail. Controleer de console (F12) voor details.");
+        console.error("❌ EmailJS Fout:", error);
+        alert("Er ging iets mis met de e-mail. Controleer de console (F12) voor details. Als het blijft misgaan, bestel dan direct via de Rabobank-betaallink.");
+        window.location.href = betaalLink;
       });
     });
   </script>
