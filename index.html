@@ -77,7 +77,13 @@
       const email = document.getElementById('klantEmail').value;
       const producten = getBesteldeProducten();
       const totaal = getTotaal();
-      const betaalLink = `https://betaalverzoek.rabobank.nl/betaalverzoek/?id=BJrL5SCVSL-xpRA6BtgHoA&bedrag=${totaal}`;
+      
+      if (totaal <= 0) {
+        alert("Selecteer minstens één product om te bestellen.");
+        return;
+      }
+      
+      const betaalLink = "https://betaalverzoek.rabobank.nl/betaalverzoek/?id=BJrL5SCVSL-xpRA6BtgHoA";
 
       emailjs.send("service_j45k2jm", "template_fqb0p8s", {
         email: email,
@@ -89,7 +95,7 @@
         window.location.href = betaalLink;
       }, function(error) {
         console.error("EmailJS Fout:", error);
-        alert("Er ging iets mis. Open de browser console (F12) voor details.");
+        alert("Er ging iets mis met de e-mail. Probeer opnieuw.");
       });
     });
   </script>
