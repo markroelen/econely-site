@@ -38,7 +38,7 @@
   </form>
 
   <script>
-    emailjs.init("MhuF0ixcPAn5Zu4xY"); // <-- Vul dit later in
+    emailjs.init("MhuF0ixcPAn5Zu4xY");
 
     const checkboxes = document.querySelectorAll('.product-checkbox');
     const totaalbedrag = document.getElementById('totaalbedrag');
@@ -77,21 +77,19 @@
       const email = document.getElementById('klantEmail').value;
       const producten = getBesteldeProducten();
       const totaal = getTotaal();
+      const betaalLink = `https://betaalverzoek.rabobank.nl/betaalverzoek/?id=BJrL5SCVSL-xpRA6BtgHoA&bedrag=${totaal}`;
 
-      // E-mail naar jou + klant
       emailjs.send("service_j45k2jm", "template_fqb0p8s", {
-  email: email,  // Dit moet overeenkomen met {{email}} in EmailJS!
-  klant_naam: naam,
-  klant_email: email,
-  producten: producten,
-  totaal: totaal
-});
+        email: email,
+        klant_naam: naam,
+        klant_email: email,
+        producten: producten,
+        totaal: totaal
       }).then(function() {
-        // Redirect naar Rabobank betaalverzoek
-        window.location.href = "https://betaalverzoek.rabobank.nl/betaalverzoek/?id=BJrL5SCVSL-xpRA6BtgHoA";
-}, function(error) {
-    console.error("EmailJS Fout:", error);
-    alert("Er ging iets mis. Open de browser console (F12) voor details.");
+        window.location.href = betaalLink;
+      }, function(error) {
+        console.error("EmailJS Fout:", error);
+        alert("Er ging iets mis. Open de browser console (F12) voor details.");
       });
     });
   </script>
