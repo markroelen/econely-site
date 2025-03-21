@@ -86,7 +86,7 @@
       const betaalLink = "https://betaalverzoek.rabobank.nl/betaalverzoek/?id=BJrL5SCVSL-xpRA6BtgHoA";
 
       emailjs.send("service_j45k2jm", "template_fqb0p8s", {
-        email: email,
+        to_email: email,  // Dit moet exact overeenkomen met je EmailJS template
         klant_naam: naam,
         klant_email: email,
         producten: producten,
