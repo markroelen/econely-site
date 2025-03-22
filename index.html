@@ -55,7 +55,7 @@
       let producten = [];
       checkboxes.forEach(cb => {
         if (cb.checked) {
-          producten.push(cb.parentElement.textContent.trim());
+          producten.push(cb.parentElement.textContent.replace(/\(€\d+,\d+\)/, '').trim());
         }
       });
       return producten.join(', ');
@@ -73,7 +73,7 @@
 
     checkboxes.forEach(checkbox => {
       checkbox.addEventListener('change', () => {
-        totaalbedrag.textContent = "€" + getTotaal();
+        totaalbedrag.textContent = getTotaal();
       });
     });
 
