@@ -10,6 +10,16 @@
     form { margin-top: 20px; }
     input[type=text], input[type=email] { padding: 5px; width: 300px; margin-bottom: 10px; display: block; }
     button { padding: 10px 20px; font-size: 1em; }
+    #stap2 { display: none; margin-top: 40px; }
+    .button-link {
+      display: inline-block;
+      margin-top: 15px;
+      padding: 10px 20px;
+      background-color: #0072b1;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 6px;
+    }
   </style>
 </head>
 <body>
@@ -30,9 +40,8 @@
 
   <div class="totaal">Totale prijs: €<span id="totaalbedrag">0.00</span></div>
 
-  <form id="bestelform" action="https://formspree.io/f/xnnpdqbq" method="POST">
+  <form id="bestelform">
     <input type="hidden" name="_subject" value="Nieuwe bestelling via Econely">
-    <input type="hidden" name="_next" value="https://betaalverzoek.rabobank.nl/betaalverzoek/?id=ZPsfN4LqQmGqJAfDcU5LKA">
     <input type="hidden" name="producten" id="productenInput">
     <input type="hidden" name="totaal" id="totaalInput">
 
@@ -44,12 +53,19 @@
     <button type="submit">Bestel via Rabobank</button>
   </form>
 
+  <div id="stap2">
+    <h2>Stap 2: Betaal je bestelling via Rabobank</h2>
+    <p>Bedankt voor je bestelling! Klik hieronder om je betaling af te ronden via Rabobank.</p>
+    <a class="button-link" href="https://betaalverzoek.rabobank.nl/betaalverzoek/?id=ZPsfN4LqQmGqJAfDcU5LKA" target="_blank">Betaal nu via Rabobank</a>
+  </div>
+
   <script>
     const checkboxes = document.querySelectorAll('.product-checkbox');
     const totaalbedrag = document.getElementById('totaalbedrag');
     const form = document.getElementById('bestelform');
     const productenInput = document.getElementById('productenInput');
     const totaalInput = document.getElementById('totaalInput');
+    const stap2 = document.getElementById('stap2');
 
     function getBesteldeProducten() {
       let producten = [];
@@ -79,18 +95,39 @@
       });
     });
 
-    form.addEventListener('submit', function(e) {
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+
       const producten = getBesteldeProducten();
       const totaal = getTotaal();
 
       if (!producten || totaal <= 0) {
         alert("Kies minstens één product.");
-        e.preventDefault();
         return;
       }
 
       productenInput.value = producten;
       totaalInput.value = totaal;
+
+      const formData = new FormData(form);
+
+      try {
+        const response = await fetch("https://formspree.io/f/xnnpdqbq", {
+          method: "POST",
+          body: formData,
+          headers: { 'Accept': 'application/json' }
+        });
+
+        if (response.ok) {
+          stap2.style.display = 'block';
+          form.reset();
+          totaalbedrag.textContent = "0.00";
+        } else {
+          alert("Er ging iets mis. Probeer het opnieuw.");
+        }
+      } catch (error) {
+        alert("Fout bij verzenden: " + error.message);
+      }
     });
   </script>
 </body>
