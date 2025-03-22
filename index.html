@@ -30,7 +30,12 @@
 
   <div class="totaal">Totale prijs: €<span id="totaalbedrag">0.00</span></div>
 
-  <form id="bestelform">
+  <form id="bestelform" action="https://formsubmit.co/roelenmark@gmail.com" method="POST">
+    <input type="hidden" name="_subject" value="Nieuwe bestelling via Econely">
+    <input type="hidden" name="_next" value="https://www.rabobank.nl">
+    <input type="hidden" name="producten" id="productenInput">
+    <input type="hidden" name="totaal" id="totaalInput">
+
     <label>Naam:<br><input type="text" name="naam" id="klantNaam" required></label>
     <label>Emailadres:<br><input type="email" name="email" id="klantEmail" required></label>
     <button type="submit">Bestel via Rabobank</button>
@@ -40,6 +45,8 @@
     const checkboxes = document.querySelectorAll('.product-checkbox');
     const totaalbedrag = document.getElementById('totaalbedrag');
     const form = document.getElementById('bestelform');
+    const productenInput = document.getElementById('productenInput');
+    const totaalInput = document.getElementById('totaalInput');
 
     function getBesteldeProducten() {
       let producten = [];
@@ -68,35 +75,17 @@
     });
 
     form.addEventListener('submit', function(e) {
-      e.preventDefault();
-
-      const naam = document.getElementById('klantNaam').value;
-      const email = document.getElementById('klantEmail').value;
       const producten = getBesteldeProducten();
       const totaal = getTotaal();
 
-      if (!naam || !email || totaal <= 0) {
-        alert("Vul je naam, e-mail in en kies minstens één product.");
+      if (!producten || totaal <= 0) {
+        alert("Kies minstens één product.");
+        e.preventDefault();
         return;
       }
 
-      fetch("https://econely-mailserver.vercel.app/api/mail", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ naam, email, producten, totaal })
-      })
-      .then(res => {
-        if (res.ok) {
-          alert("Bestelling verzonden! Je ontvangt een bevestigingsmail.");
-          window.location.href = "https://econely.netlify.app/bedankt.html";
-        } else {
-          alert("Er ging iets mis met verzenden. Probeer opnieuw.");
-        }
-      })
-      .catch(err => {
-        console.error(err);
-        alert("Er ging iets mis. Controleer je verbinding.");
-      });
+      productenInput.value = producten;
+      totaalInput.value = totaal;
     });
   </script>
 </body>
