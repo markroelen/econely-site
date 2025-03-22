@@ -10,7 +10,7 @@
     form { margin-top: 20px; }
     input[type=text], input[type=email] { padding: 5px; width: 300px; margin-bottom: 10px; display: block; }
     button { padding: 10px 20px; font-size: 1em; }
-    #stap2 { display: none; margin-top: 40px; }
+    #stap2 { margin-top: 40px; }
     .button-link {
       display: inline-block;
       margin-top: 15px;
@@ -55,7 +55,10 @@
 
   <div id="stap2">
     <h2>Stap 2: Betaal je bestelling via Rabobank</h2>
-    <p>Bedankt voor je bestelling! Klik hieronder om je betaling af te ronden via Rabobank.</p>
+    <p>
+      Nadat je het formulier hierboven hebt ingevuld en verstuurd, betaal je via de onderstaande Rabobank-betaallink.
+      <br><strong>Onthoud het totaalbedrag hierboven</strong> en vul dat handmatig in op de volgende pagina.
+    </p>
     <a class="button-link" href="https://betaalverzoek.rabobank.nl/betaalverzoek/?id=ZPsfN4LqQmGqJAfDcU5LKA" target="_blank">Betaal nu via Rabobank</a>
   </div>
 
@@ -72,7 +75,7 @@
       checkboxes.forEach(cb => {
         if (cb.checked) {
           let naam = cb.parentElement.textContent;
-          naam = naam.replace(/\(€\d+,\d+\)/, '').replace(/^\s*€/, '').trim();
+          naam = naam.replace(/\(€\d+,\d+\)/, '').trim();
           producten.push(naam);
         }
       });
@@ -119,7 +122,7 @@
         });
 
         if (response.ok) {
-          stap2.style.display = 'block';
+          alert("Je bestelling is verzonden. Je kunt nu betalen via stap 2 hieronder.");
           form.reset();
           totaalbedrag.textContent = "0.00";
         } else {
