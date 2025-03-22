@@ -27,5 +27,12 @@
   <p>Je bestelling is succesvol geplaatst.</p>
   <p>Klik op de knop hieronder om veilig te betalen via Rabobank:</p>
   <a class="button" href="https://betaalverzoek.rabobank.nl/betaalverzoek/?id=ZPsfN4LqQmGqJAfDcU5LKA" target="_blank">Betaal nu via Rabobank</a>
+
+  <script>
+    // Redirect beveiliging fallback: als deze pagina per ongeluk rechtstreeks wordt geladen, stuur dan terug naar het formulier
+    if (document.referrer.indexOf("econely.netlify.app") === -1) {
+      window.location.href = "https://econely.netlify.app";
+    }
+  </script>
 </body>
 </html>
