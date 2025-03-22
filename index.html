@@ -32,7 +32,7 @@
 
   <form id="bestelform" action="https://formspree.io/f/xnnpdqbq" method="POST">
     <input type="hidden" name="_subject" value="Nieuwe bestelling via Econely">
-    <input type="hidden" name="_next" value="https://www.rabobank.nl">
+    <input type="hidden" name="_next" value="https://betaalverzoek.rabobank.nl/betaalverzoek/?id=ZPsfN4LqQmGqJAfDcU5LKA">
     <input type="hidden" name="producten" id="productenInput">
     <input type="hidden" name="totaal" id="totaalInput">
 
@@ -55,7 +55,9 @@
       let producten = [];
       checkboxes.forEach(cb => {
         if (cb.checked) {
-          producten.push(cb.parentElement.textContent.replace(/\(€\d+,\d+\)/, '').trim());
+          let naam = cb.parentElement.textContent;
+          naam = naam.replace(/\(€\d+,\d+\)/, '').replace(/^\s*€/, '').trim();
+          producten.push(naam);
         }
       });
       return producten.join(', ');
