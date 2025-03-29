@@ -50,6 +50,15 @@
       align-items: center;
       gap: 15px;
       flex-wrap: wrap;
+      cursor: pointer;
+    }
+
+    .product:hover {
+      background-color: #f0f0f0;
+    }
+
+    .product input[type="checkbox"] {
+      pointer-events: none;
     }
 
     .product img {
@@ -174,6 +183,20 @@
       }
     }
   </style>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const productDivs = document.querySelectorAll('.product');
+      productDivs.forEach(div => {
+        div.addEventListener('click', function (e) {
+          const checkbox = this.querySelector('input[type="checkbox"]');
+          if (e.target !== checkbox) {
+            checkbox.checked = !checkbox.checked;
+            checkbox.dispatchEvent(new Event('change'));
+          }
+        });
+      });
+    });
+  </script>
 </head>
 <body style="background-color: #f9f9f9;">
     
