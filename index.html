@@ -2,6 +2,7 @@
 <html lang="nl">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Econely Bestellen</title>
   <style>
     body {
@@ -13,9 +14,10 @@
     }
 
     h1, h2 {
-      font-size: 1.6em;
+      font-size: 1.8em;
       margin-bottom: 20px;
       color: #314528;
+      text-align: center;
     }
 
     details {
@@ -24,11 +26,10 @@
       overflow: hidden;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
       background-color: #ffffff;
-      transition: all 0.3s ease;
     }
 
     summary {
-      font-size: 1.2em;
+      font-size: 1.3em;
       font-weight: 600;
       padding: 15px 20px;
       background-color: #b2935b;
@@ -44,13 +45,12 @@
     .product {
       display: flex;
       flex-direction: row;
-      background: #fff;
+      align-items: center;
       padding: 15px 20px;
       border-top: 1px solid #eee;
-      align-items: center;
-      gap: 15px;
-      flex-wrap: wrap;
       cursor: pointer;
+      gap: 15px;
+      transition: background 0.2s;
     }
 
     .product:hover {
@@ -58,32 +58,49 @@
     }
 
     .product input[type="checkbox"] {
-      pointer-events: none;
+      display: none;
     }
 
     .product img {
-      width: 120px;
+      width: 100px;
       height: auto;
       border-radius: 8px;
+      flex-shrink: 0;
     }
 
     .product h4 {
       font-size: 1.1em;
       margin: 0 0 5px 0;
-      color: #333;
     }
 
     .product p {
+      margin: 0;
       font-size: 1em;
       color: #666;
-      margin-bottom: 10px;
+    }
+
+    .product-label {
+      display: flex;
+      align-items: center;
+      width: 100%;
+    }
+
+    .product-label::before {
+      content: "⬜";
+      font-size: 1.5em;
+      margin-right: 15px;
+      color: #314528;
+    }
+
+    input[type="checkbox"]:checked + .product-label::before {
+      content: "✅";
     }
 
     .totaal {
-      font-size: 1.4em;
+      font-size: 1.5em;
       font-weight: bold;
       color: #b2935b;
-      margin: 25px 0 15px 0;
+      margin: 25px 0;
       text-align: center;
     }
 
@@ -99,25 +116,25 @@
     }
 
     label {
-      font-size: 1em;
+      font-size: 1.1em;
       display: block;
       margin-bottom: 15px;
       color: #333;
     }
 
     input[type=text], input[type=email] {
-      padding: 14px;
+      padding: 16px;
       width: 100%;
       box-sizing: border-box;
       border: 1px solid #ccc;
       border-radius: 8px;
+      font-size: 1.1em;
       margin-top: 5px;
-      font-size: 1em;
     }
 
     button {
       width: 100%;
-      padding: 15px;
+      padding: 16px;
       font-size: 1.1em;
       background-color: #314528;
       color: white;
@@ -125,7 +142,6 @@
       border-radius: 8px;
       margin-top: 20px;
       cursor: pointer;
-      transition: background 0.3s ease;
     }
 
     button:hover {
@@ -137,13 +153,14 @@
       max-width: 600px;
       margin-left: auto;
       margin-right: auto;
+      padding: 15px;
     }
 
     .button-link {
       background-color: #0072b1;
       display: block;
       width: 100%;
-      padding: 15px;
+      padding: 16px;
       text-align: center;
       color: white;
       text-decoration: none;
@@ -156,47 +173,30 @@
       background-color: #005c91;
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: 600px) {
       h1, h2 {
-        font-size: 1.4em;
-        text-align: center;
+        font-size: 1.5em;
       }
 
       .product {
         flex-direction: column;
-        align-items: center;
         text-align: center;
       }
 
       .product img {
-        width: 90%;
-        max-width: 220px;
+        width: 80%;
       }
 
-      summary {
-        font-size: 1em;
-        padding: 12px 16px;
+      .product-label {
+        flex-direction: column;
+        align-items: center;
       }
 
-      form, #stap2 {
-        padding: 15px;
+      .product-label::before {
+        margin: 0 0 10px 0;
       }
     }
   </style>
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      const productDivs = document.querySelectorAll('.product');
-      productDivs.forEach(div => {
-        div.addEventListener('click', function (e) {
-          const checkbox = this.querySelector('input[type="checkbox"]');
-          if (e.target !== checkbox) {
-            checkbox.checked = !checkbox.checked;
-            checkbox.dispatchEvent(new Event('change'));
-          }
-        });
-      });
-    });
-  </script>
 </head>
 <body style="background-color: #f9f9f9;">
     
@@ -923,99 +923,120 @@
               <p><strong>€ 3.33</strong></p>
           </div>
         </div>
-        </details>
-
-  <div class="totaal">Totale prijs: €<span id="totaalbedrag">0.00</span></div>
-
-  <form id="bestelform">
-    <input type="hidden" name="_subject" value="Nieuwe bestelling via Econely">
-    <input type="hidden" name="producten" id="productenInput">
-    <input type="hidden" name="totaal" id="totaalInput">
-
-    <label>Naam:<br><input type="text" name="naam" id="klantNaam" required></label>
-    <label>Emailadres:<br><input type="email" name="email" id="klantEmail" required></label>
-    <label>Straat + huisnummer:<br><input type="text" name="adres" required></label>
-    <label>Plaats:<br><input type="text" name="plaats" required></label>
-
-    <button type="submit">Verstuur formulier</button>
-  </form>
-
-  <div id="stap2">
-    <h2>Stap 2: Betaal je bestelling via Rabobank</h2>
-    <p>
-      Nadat je het formulier hierboven hebt ingevuld en verstuurd, betaal je via de onderstaande Rabobank-betaallink.
-      <br><strong>Onthoud het totaalbedrag hierboven</strong> en vul dat handmatig in op de volgende pagina.
-    </p>
-    <a class="button-link" href="https://betaalverzoek.rabobank.nl/betaalverzoek/?id=BJrL5SCVSL-xpRA6BtgHoA" target="_blank">Betaal nu via Rabobank</a>
+       <details open>
+  <summary>Bakken & Oven</summary>
+  <div class="product" onclick="toggleCheckbox(this)">
+    <input type="checkbox" class="product-checkbox" data-price="3.20" data-name="Bakpapier - 15m - navulling">
+    <div class="product-label">
+      <img src="https://cdn.eco-logisch.nl/images/bakpapier_navul.jpg" alt="Bakpapier">
+      <div>
+        <h4>Bakpapier - 15m - navulling</h4>
+        <p><strong>€ 3.20</strong></p>
+      </div>
+    </div>
   </div>
+</details>
 
-  <script>
-    const checkboxes = document.querySelectorAll('.product-checkbox');
-    const totaalbedrag = document.getElementById('totaalbedrag');
-    const form = document.getElementById('bestelform');
-    const productenInput = document.getElementById('productenInput');
-    const totaalInput = document.getElementById('totaalInput');
+<div class="totaal">Totale prijs: €<span id="totaalbedrag">0.00</span></div>
 
-    function getBesteldeProducten() {
-      let producten = [];
-      checkboxes.forEach(cb => {
-        if (cb.checked) {
-          producten.push(cb.dataset.name);
-        }
-      });
-      return producten.join(', ');
-    }
+<form id="bestelform">
+  <input type="hidden" name="_subject" value="Nieuwe bestelling via Econely">
+  <input type="hidden" name="producten" id="productenInput">
+  <input type="hidden" name="totaal" id="totaalInput">
 
-    function getTotaal() {
-      let totaal = 0;
-      checkboxes.forEach(cb => {
-        if (cb.checked) {
-          totaal += parseFloat(cb.dataset.price);
-        }
-      });
-      return totaal.toFixed(2);
-    }
+  <label>Naam:<br><input type="text" name="naam" id="klantNaam" required></label>
+  <label>Emailadres:<br><input type="email" name="email" id="klantEmail" required></label>
+  <label>Straat + huisnummer:<br><input type="text" name="adres" required></label>
+  <label>Plaats:<br><input type="text" name="plaats" required></label>
 
-    checkboxes.forEach(checkbox => {
-      checkbox.addEventListener('change', () => {
-        totaalbedrag.textContent = getTotaal();
-      });
-    });
+  <button type="submit">Verstuur formulier</button>
+</form>
 
-    form.addEventListener('submit', async function(e) {
-      e.preventDefault();
+<div id="stap2">
+  <h2>Stap 2: Betaal je bestelling via Rabobank</h2>
+  <p>
+    Nadat je het formulier hierboven hebt ingevuld en verstuurd, betaal je via de onderstaande Rabobank-betaallink.
+    <br><strong>Onthoud het totaalbedrag hierboven</strong> en vul dat handmatig in op de volgende pagina.
+  </p>
+  <a class="button-link" href="https://betaalverzoek.rabobank.nl/betaalverzoek/?id=BJrL5SCVSL-xpRA6BtgHoA" target="_blank">Betaal nu via Rabobank</a>
+</div>
 
-      const producten = getBesteldeProducten();
-      const totaal = getTotaal();
+<script>
+  const checkboxes = document.querySelectorAll('.product-checkbox');
+  const totaalbedrag = document.getElementById('totaalbedrag');
+  const form = document.getElementById('bestelform');
+  const productenInput = document.getElementById('productenInput');
+  const totaalInput = document.getElementById('totaalInput');
 
-      if (!producten || totaal <= 0) {
-        alert("Kies minstens één product.");
-        return;
-      }
-
-      productenInput.value = producten;
-      totaalInput.value = totaal;
-
-      const formData = new FormData(form);
-
-      try {
-        const response = await fetch("https://formspree.io/f/xnnpdqbq", {
-          method: "POST",
-          body: formData,
-          headers: { 'Accept': 'application/json' }
-        });
-
-        if (response.ok) {
-          alert("Je bestelling is verzonden. Je kunt nu betalen via stap 2 hieronder.");
-          form.reset();
-          totaalbedrag.textContent = "0.00";
-        } else {
-          alert("Er ging iets mis. Probeer het opnieuw.");
-        }
-      } catch (error) {
-        alert("Fout bij verzenden: " + error.message);
+  function getBesteldeProducten() {
+    let producten = [];
+    checkboxes.forEach(cb => {
+      if (cb.checked) {
+        producten.push(cb.dataset.name);
       }
     });
-  </script>
+    return producten.join(', ');
+  }
+
+  function getTotaal() {
+    let totaal = 0;
+    checkboxes.forEach(cb => {
+      if (cb.checked) {
+        totaal += parseFloat(cb.dataset.price);
+      }
+    });
+    return totaal.toFixed(2);
+  }
+
+  function updateTotaal() {
+    totaalbedrag.textContent = getTotaal();
+  }
+
+  checkboxes.forEach(cb => {
+    cb.addEventListener('change', updateTotaal);
+  });
+
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const producten = getBesteldeProducten();
+    const totaal = getTotaal();
+
+    if (!producten || totaal <= 0) {
+      alert("Kies minstens één product.");
+      return;
+    }
+
+    productenInput.value = producten;
+    totaalInput.value = totaal;
+
+    const formData = new FormData(form);
+
+    try {
+      const response = await fetch("https://formspree.io/f/xnnpdqbq", {
+        method: "POST",
+        body: formData,
+        headers: { 'Accept': 'application/json' }
+      });
+
+      if (response.ok) {
+        alert("Je bestelling is verzonden. Je kunt nu betalen via stap 2 hieronder.");
+        form.reset();
+        totaalbedrag.textContent = "0.00";
+      } else {
+        alert("Er ging iets mis. Probeer het opnieuw.");
+      }
+    } catch (error) {
+      alert("Fout bij verzenden: " + error.message);
+    }
+  });
+
+  function toggleCheckbox(productDiv) {
+    const checkbox = productDiv.querySelector('input[type="checkbox"]');
+    checkbox.checked = !checkbox.checked;
+    checkbox.dispatchEvent(new Event('change'));
+  }
+</script>
+
 </body>
 </html>
