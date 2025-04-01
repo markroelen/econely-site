@@ -203,7 +203,7 @@
 
 <script src="producten.js"></script>
 
-<div class="totaal">Totale prijs: €<span id="totaalbedrag">0.00</span></div>
+<div class="totaal">Totale prijs: €<span id="totaalbedrag">6.95</span></div>
 
 <form id="bestelform">
   <input type="hidden" name="_subject" value="Nieuwe bestelling via Econely">
@@ -233,6 +233,8 @@
   const productenInput = document.getElementById('productenInput');
   const totaalInput = document.getElementById('totaalInput');
 
+  const vasteKosten = 6.95;
+
   function getBesteldeProducten() {
     let producten = [];
     document.querySelectorAll('.product-checkbox').forEach(cb => {
@@ -244,7 +246,7 @@
   }
 
   function getTotaal() {
-    let totaal = 0;
+    let totaal = vasteKosten;
     document.querySelectorAll('.product-checkbox').forEach(cb => {
       if (cb.checked) {
         totaal += parseFloat(cb.dataset.price);
@@ -265,7 +267,7 @@
     const producten = getBesteldeProducten();
     const totaal = getTotaal();
 
-    if (!producten || totaal <= 0) {
+    if (!producten || parseFloat(totaal) <= vasteKosten) {
       alert("Kies minstens één product.");
       return;
     }
@@ -285,7 +287,7 @@
       if (response.ok) {
         alert("Je bestelling is verzonden. Je kunt nu betalen via stap 2 hieronder.");
         form.reset();
-        totaalbedrag.textContent = "0.00";
+        totaalbedrag.textContent = vasteKosten.toFixed(2);
       } else {
         alert("Er ging iets mis. Probeer het opnieuw.");
       }
