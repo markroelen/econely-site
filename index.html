@@ -179,25 +179,7 @@
       }
     }
   </style>
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      const observer = new MutationObserver(() => {
-        const productDivs = document.querySelectorAll('.product');
-        productDivs.forEach(div => {
-          div.addEventListener('click', function (e) {
-            const checkbox = this.querySelector('input[type="checkbox"]');
-            if (e.target !== checkbox) {
-              checkbox.checked = !checkbox.checked;
-              checkbox.dispatchEvent(new Event('change'));
-            }
-          });
-        });
-        updateTotaal();
-      });
-      observer.observe(document.body, { childList: true, subtree: true });
-    });
-  </script>
-</head>
+ </head>
 <body>
 <h1>Stap 1: Bekijk en stel je Econely keuken samen</h1>
 
@@ -248,7 +230,8 @@
     let totaal = vasteKosten;
     document.querySelectorAll('.product-checkbox').forEach(cb => {
       if (cb.checked) {
-        totaal += parseFloat(cb.dataset.price || 0);
+        const prijs = parseFloat(cb.getAttribute('data-price'));
+        if (!isNaN(prijs)) totaal += prijs;
       }
     });
     return totaal.toFixed(2);
@@ -262,6 +245,16 @@
     if (e.target.classList.contains('product-checkbox')) {
       updateTotaal();
     }
+  });
+
+  document.querySelectorAll('.product').forEach(div => {
+    div.addEventListener('click', function (e) {
+      const checkbox = this.querySelector('input[type="checkbox"]');
+      if (e.target !== checkbox) {
+        checkbox.checked = !checkbox.checked;
+        checkbox.dispatchEvent(new Event('change'));
+      }
+    });
   });
 
   form.addEventListener('submit', async function(e) {
