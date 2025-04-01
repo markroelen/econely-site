@@ -181,16 +181,20 @@
   </style>
   <script>
     document.addEventListener('DOMContentLoaded', function () {
-      const productDivs = document.querySelectorAll('.product');
-      productDivs.forEach(div => {
-        div.addEventListener('click', function (e) {
-          const checkbox = this.querySelector('input[type="checkbox"]');
-          if (e.target !== checkbox) {
-            checkbox.checked = !checkbox.checked;
-            checkbox.dispatchEvent(new Event('change'));
-          }
+      const observer = new MutationObserver(() => {
+        const productDivs = document.querySelectorAll('.product');
+        productDivs.forEach(div => {
+          div.addEventListener('click', function (e) {
+            const checkbox = this.querySelector('input[type="checkbox"]');
+            if (e.target !== checkbox) {
+              checkbox.checked = !checkbox.checked;
+              checkbox.dispatchEvent(new Event('change'));
+            }
+          });
         });
       });
+
+      observer.observe(document.body, { childList: true, subtree: true });
     });
   </script>
 </head>
@@ -224,7 +228,6 @@
 </div>
 
 <script>
-  const checkboxes = document.querySelectorAll('.product-checkbox');
   const totaalbedrag = document.getElementById('totaalbedrag');
   const form = document.getElementById('bestelform');
   const productenInput = document.getElementById('productenInput');
@@ -232,7 +235,7 @@
 
   function getBesteldeProducten() {
     let producten = [];
-    checkboxes.forEach(cb => {
+    document.querySelectorAll('.product-checkbox').forEach(cb => {
       if (cb.checked) {
         producten.push(cb.dataset.name);
       }
@@ -242,7 +245,7 @@
 
   function getTotaal() {
     let totaal = 0;
-    checkboxes.forEach(cb => {
+    document.querySelectorAll('.product-checkbox').forEach(cb => {
       if (cb.checked) {
         totaal += parseFloat(cb.dataset.price);
       }
@@ -250,10 +253,10 @@
     return totaal.toFixed(2);
   }
 
-  checkboxes.forEach(checkbox => {
-    checkbox.addEventListener('change', () => {
+  document.addEventListener('change', (e) => {
+    if (e.target.classList.contains('product-checkbox')) {
       totaalbedrag.textContent = getTotaal();
-    });
+    }
   });
 
   form.addEventListener('submit', async function(e) {
