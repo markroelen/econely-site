@@ -776,26 +776,91 @@
     </p>
 <a class="button-link" href="https://betaalverzoek.rabobank.nl/betaalverzoek/?id=BJrL5SCVSL-xpRA6BtgHoA" target="_blank">Betaal nu via Rabobank</a>
 </div>
- <script>
-    document.getElementById('zoekbalk').addEventListener('input', function () {
-      const zoekwaarde = this.value.trim();
-      const producten = document.querySelectorAll('.product');
+ <div class="totaal">Totale prijs: €<span id="totaalbedrag">0.00</span></div>
+<form id="bestelform">
+<input name="_subject" type="hidden" value="Nieuwe bestelling via Econely"/>
+<input id="productenInput" name="producten" type="hidden"/>
+<input id="totaalInput" name="totaal" type="hidden"/>
+<label>Naam:<br/><input id="klantNaam" name="naam" required="" type="text"/></label>
+<label>Emailadres:<br/><input id="klantEmail" name="email" required="" type="email"/></label>
+<label>Straat + huisnummer:<br/><input name="adres" required="" type="text"/></label>
+<label>Plaats:<br/><input name="plaats" required="" type="text"/></label>
+<button type="submit">Verstuur formulier</button>
+</form>
+<div id="stap2">
+<h2>Stap 2: Betaal je bestelling via Rabobank</h2>
+<p>
+      Nadat je het formulier hierboven hebt ingevuld en verstuurd, betaal je via de onderstaande Rabobank-betaallink.
+      <br/><strong>Onthoud het totaalbedrag hierboven</strong> en vul dat handmatig in op de volgende pagina.
+    </p>
+<a class="button-link" href="https://betaalverzoek.rabobank.nl/betaalverzoek/?id=BJrL5SCVSL-xpRA6BtgHoA" target="_blank">Betaal nu via Rabobank</a>
+</div>
+<script>
+    const checkboxes = document.querySelectorAll('.product-checkbox');
+    const totaalbedrag = document.getElementById('totaalbedrag');
+    const form = document.getElementById('bestelform');
+    const productenInput = document.getElementById('productenInput');
+    const totaalInput = document.getElementById('totaalInput');
 
-      if (zoekwaarde === '') {
-        producten.forEach(p => p.classList.remove('hidden'));
+    function getBesteldeProducten() {
+      let producten = [];
+      checkboxes.forEach(cb => {
+        if (cb.checked) {
+          producten.push(cb.dataset.name);
+        }
+      });
+      return producten.join(', ');
+    }
+
+    function getTotaal() {
+      let totaal = 0;
+      checkboxes.forEach(cb => {
+        if (cb.checked) {
+          totaal += parseFloat(cb.dataset.price);
+        }
+      });
+      return totaal.toFixed(2);
+    }
+
+    checkboxes.forEach(checkbox => {
+      checkbox.addEventListener('change', () => {
+        totaalbedrag.textContent = getTotaal();
+      });
+    });
+
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      const producten = getBesteldeProducten();
+      const totaal = getTotaal();
+
+      if (!producten || totaal <= 0) {
+        alert("Kies minstens één product.");
         return;
       }
 
-      producten.forEach(product => {
-        const titel = product.querySelector('h4')?.innerText || '';
-        const nummer = titel.match(/^\d+/)?.[0];
+      productenInput.value = producten;
+      totaalInput.value = totaal;
 
-        if (nummer === zoekwaarde) {
-          product.classList.remove('hidden');
+      const formData = new FormData(form);
+
+      try {
+        const response = await fetch("https://formspree.io/f/xnnpdqbq", {
+          method: "POST",
+          body: formData,
+          headers: { 'Accept': 'application/json' }
+        });
+
+        if (response.ok) {
+          alert("Je bestelling is verzonden. Je kunt nu betalen via stap 2 hieronder.");
+          form.reset();
+          totaalbedrag.textContent = "0.00";
         } else {
-          product.classList.add('hidden');
+          alert("Er ging iets mis. Probeer het opnieuw.");
         }
-      });
+      } catch (error) {
+        alert("Fout bij verzenden: " + error.message);
+      }
     });
   </script>
 </body>
