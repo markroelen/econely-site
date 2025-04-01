@@ -192,6 +192,8 @@
             }
           });
         });
+
+        updateTotaal(); // Initiale update uitvoeren
       });
 
       observer.observe(document.body, { childList: true, subtree: true });
@@ -249,15 +251,19 @@
     let totaal = vasteKosten;
     document.querySelectorAll('.product-checkbox').forEach(cb => {
       if (cb.checked) {
-        totaal += parseFloat(cb.dataset.price);
+        totaal += parseFloat(cb.dataset.price || 0);
       }
     });
     return totaal.toFixed(2);
   }
 
+  function updateTotaal() {
+    totaalbedrag.textContent = getTotaal();
+  }
+
   document.addEventListener('change', (e) => {
     if (e.target.classList.contains('product-checkbox')) {
-      totaalbedrag.textContent = getTotaal();
+      updateTotaal();
     }
   });
 
@@ -287,7 +293,7 @@
       if (response.ok) {
         alert("Je bestelling is verzonden. Je kunt nu betalen via stap 2 hieronder.");
         form.reset();
-        totaalbedrag.textContent = vasteKosten.toFixed(2);
+        updateTotaal();
       } else {
         alert("Er ging iets mis. Probeer het opnieuw.");
       }
