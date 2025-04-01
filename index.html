@@ -1705,7 +1705,6 @@
           <p><strong>€ 10.30</strong></p>
       </div>
     </div>
-    
 
     <div class="product">
       <input type="checkbox" class="product-checkbox" data-price="3.95" data-name="Rietjes - Bamboe 4st. met borstel">
@@ -1716,6 +1715,29 @@
       </div>
     </div>
 </details>
+  <div class="totaal">Totale prijs: €<span id="totaalbedrag">0.00</span></div>
+
+  <form id="bestelform">
+    <input type="hidden" name="_subject" value="Nieuwe bestelling via Econely">
+    <input type="hidden" name="producten" id="productenInput">
+    <input type="hidden" name="totaal" id="totaalInput">
+
+    <label>Naam:<br><input type="text" name="naam" id="klantNaam" required></label>
+    <label>Emailadres:<br><input type="email" name="email" id="klantEmail" required></label>
+    <label>Straat + huisnummer:<br><input type="text" name="adres" required></label>
+    <label>Plaats:<br><input type="text" name="plaats" required></label>
+
+    <button type="submit">Verstuur formulier</button>
+  </form>
+
+  <div id="stap2">
+    <h2>Stap 2: Betaal je bestelling via Rabobank</h2>
+    <p>
+      Nadat je het formulier hierboven hebt ingevuld en verstuurd, betaal je via de onderstaande Rabobank-betaallink.
+      <br><strong>Onthoud het totaalbedrag hierboven</strong> en vul dat handmatig in op de volgende pagina.
+    </p>
+    <a class="button-link" href="https://betaalverzoek.rabobank.nl/betaalverzoek/?id=BJrL5SCVSL-xpRA6BtgHoA" target="_blank">Betaal nu via Rabobank</a>
+  </div>
 
   <script>
     const checkboxes = document.querySelectorAll('.product-checkbox');
