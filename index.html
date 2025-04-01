@@ -178,8 +178,11 @@
         padding: 15px;
       }
     }
+  .product {
+      cursor: pointer;
+    }
   </style>
- </head>
+</head>
 <body>
 <h1>Stap 1: Bekijk en stel je Econely keuken samen</h1>
 
@@ -247,15 +250,20 @@
     }
   });
 
-  document.querySelectorAll('.product').forEach(div => {
-    div.addEventListener('click', function (e) {
-      const checkbox = this.querySelector('input[type="checkbox"]');
-      if (e.target !== checkbox) {
-        checkbox.checked = !checkbox.checked;
-        checkbox.dispatchEvent(new Event('change'));
-      }
+  // Event listeners op checkbox + product-div
+  function setProductEvents() {
+    document.querySelectorAll('.product').forEach(div => {
+      div.addEventListener('click', function (e) {
+        const checkbox = this.querySelector('input[type="checkbox"]');
+        if (checkbox && e.target !== checkbox) {
+          checkbox.checked = !checkbox.checked;
+          checkbox.dispatchEvent(new Event('change'));
+        }
+      });
     });
-  });
+  }
+
+  setProductEvents();
 
   form.addEventListener('submit', async function(e) {
     e.preventDefault();
