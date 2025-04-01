@@ -1634,12 +1634,6 @@ document.addEventListener('DOMContentLoaded', function () {
     if (match) {
       resultaatContainer.innerHTML = match;
 
-const origineelProduct = document.querySelector(`.product[data-id="${zoekterm}"]`);
-if (origineelProduct) {
-  const checkbox = origineelProduct.querySelector('input[type="checkbox"]');
-  checkbox.checked = true;
-  checkbox.dispatchEvent(new Event('change'));
-}
       activeerProductKlikken();
     } else {
       resultaatContainer.innerHTML = zoekterm === '' ? '' : '<p style="padding:10px;">Geen product gevonden.</p>';
