@@ -183,6 +183,21 @@
         padding: 15px;
       }
     }
+    .totaal-fixed {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: #ffffff;
+  border-top: 1px solid #ccc;
+  padding: 15px;
+  text-align: center;
+  font-size: 1.3em;
+  font-weight: bold;
+  color: #b2935b;
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.08);
+  z-index: 999;
+}
   </style>
   <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -1552,7 +1567,8 @@
       </div>
     </div>
 </details>
-  <div class="totaal">Totale prijs: €<span id="totaalbedrag">0.00</span></div>
+  <div class="totaal totaal-fixed">Totale prijs: €<span id="totaalbedrag">0.00</span></div>
+
 
   <form id="bestelform">
     <input type="hidden" name="_subject" value="Nieuwe bestelling via Econely">
