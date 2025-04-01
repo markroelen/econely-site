@@ -153,7 +153,6 @@
         });
       });
 
-      // Zoekfunctionaliteit
       document.getElementById('zoekKnop').addEventListener('click', function () {
         const zoekterm = document.getElementById('zoekInput').value.trim();
         const doel = document.querySelector(`.product[data-id="${zoekterm}"]`);
@@ -168,8 +167,12 @@
     });
   </script>
 </head>
-<body style="background-color: #f9f9f9;">
-    
+<body>
+  <div id="zoekbalk">
+    <input type="text" id="zoekInput" placeholder="Zoek op product ID...">
+    <button id="zoekKnop">Zoek</button>
+  </div>
+
   <h1>Stap 1: Bekijk en stel je Econely keuken samen</h1>
 <details><summary>Bakken & Oven</summary>
 
