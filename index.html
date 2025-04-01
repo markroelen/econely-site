@@ -173,6 +173,10 @@
 </div>
 <div id="zoekResultaat" style="max-width: 460px; margin: 10px auto;"></div>
 
+<div id="zoekbalk" style="max-width: 360px; margin: 20px auto;">
+  <input type="text" id="zoekInput" placeholder="Zoek op product ID..." style="width: 100%; padding: 10px; font-size: 1em; border-radius: 6px; border: 1px solid #ccc;">
+</div>
+<div id="zoekResultaat" style="max-width: 480px; margin: 15px auto;"></div>
 
   <h1>Stap 1: Bekijk en stel je Econely keuken samen</h1>
 <details><summary>Bakken & Oven</summary>
@@ -1603,22 +1607,53 @@
   </script>
   <script src="productData.js"></script>
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const zoekInput = document.getElementById('zoekInput');
-    const resultaatContainer = document.getElementById('zoekResultaat');
-
-    zoekInput.addEventListener('input', function () {
-      const zoekterm = zoekInput.value.trim();
-      const match = productData[zoekterm];
-
-      if (match) {
-        resultaatContainer.innerHTML = match;
-      } else {
-        resultaatContainer.innerHTML = zoekterm === '' ? '' : '<p style="padding:10px;">Geen product gevonden.</p>';
+function activeerProductKlikken() {
+  const productDivs = document.querySelectorAll('.product');
+  productDivs.forEach(div => {
+    div.addEventListener('click', function (e) {
+      const checkbox = this.querySelector('input[type="checkbox"]');
+      if (e.target !== checkbox) {
+        checkbox.checked = !checkbox.checked;
+        checkbox.dispatchEvent(new Event('change'));
       }
     });
   });
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+  const zoekInput = document.getElementById('zoekInput');
+  const resultaatContainer = document.getElementById('zoekResultaat');
+  const totaalbedrag = document.getElementById('totaalbedrag');
+
+  function getTotaal() {
+    let totaal = 0;
+    document.querySelectorAll('.product-checkbox:checked').forEach(cb => {
+      totaal += parseFloat(cb.dataset.price);
+    });
+    return totaal.toFixed(2);
+  }
+
+  zoekInput.addEventListener('input', function () {
+    const zoekterm = zoekInput.value.trim();
+    const match = window.productData[zoekterm];
+
+    if (match) {
+      resultaatContainer.innerHTML = match;
+      activeerProductKlikken();
+    } else {
+      resultaatContainer.innerHTML = zoekterm === '' ? '' : '<p style="padding:10px;">Geen product gevonden.</p>';
+    }
+
+    const nieuweCheckboxes = document.querySelectorAll('.product-checkbox');
+    nieuweCheckboxes.forEach(checkbox => {
+      checkbox.addEventListener('change', () => {
+        totaalbedrag.textContent = getTotaal();
+      });
+    });
+  });
+});
 </script>
+
 
 </body>
 </html>
