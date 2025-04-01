@@ -1600,7 +1600,6 @@
       }
     });
   </script>
-  <script src="productData.js"></script>
 <script>
 function activeerProductKlikken() {
   const productDivs = document.querySelectorAll('.product');
@@ -1647,6 +1646,14 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 });
+</script>
+<script>
+  window.productData = {};
+
+  document.querySelectorAll('.product').forEach(product => {
+    const id = product.getAttribute('data-id');
+    window.productData[id] = product.outerHTML;
+  });
 </script>
 
 
