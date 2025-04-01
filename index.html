@@ -168,10 +168,11 @@
   </script>
 </head>
 <body>
-  <div id="zoekbalk">
-    <input type="text" id="zoekInput" placeholder="Zoek op product ID...">
-    <button id="zoekKnop">Zoek</button>
-  </div>
+ <div id="zoekbalk" style="max-width: 360px; margin: 20px auto;">
+  <input type="text" id="zoekInput" placeholder="Zoek op product ID..." style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #ccc;">
+</div>
+<div id="zoekResultaat" style="max-width: 460px; margin: 10px auto;"></div>
+
 
   <h1>Stap 1: Bekijk en stel je Econely keuken samen</h1>
 <details><summary>Bakken & Oven</summary>
@@ -1600,5 +1601,36 @@
       }
     });
   </script>
+  <script>
+const productData = {
+  "8": `<div class="product" data-id="8">
+    <input type="checkbox" class="product-checkbox" data-price="5.77" data-name="Bakpapier Rond 24st.">
+    <img src="https://cdn.eco-logisch.nl/images/taart-bakapaier%20rond-web.jpg" alt="Bakpapier Rond 24st.">
+    <div><h4>Bakpapier Rond 24st.</h4><p><strong>€ 5.77</strong></p></div>
+  </div>`,
+  "9": `<div class="product" data-id="9">
+    <input type="checkbox" class="product-checkbox" data-price="6.90" data-name="Taartvorm Cake en Pie - 4st - 20cm - FSC ongebleekt">
+    <img src="https://cdn.eco-logisch.nl/images/taart%20en%20pie1.jpg" alt="Taartvorm Cake en Pie">
+    <div><h4>Taartvorm Cake en Pie - 4st - 20cm - FSC ongebleekt</h4><p><strong>€ 6.90</strong></p></div>
+  </div>`
+  // Voeg hier alle andere producten toe met hun unieke ID
+};
+
+document.addEventListener('DOMContentLoaded', function () {
+  const zoekInput = document.getElementById('zoekInput');
+  const resultaatContainer = document.getElementById('zoekResultaat');
+
+  zoekInput.addEventListener('input', function () {
+    const zoekterm = zoekInput.value.trim();
+    const match = productData[zoekterm];
+
+    if (match) {
+      resultaatContainer.innerHTML = match;
+    } else {
+      resultaatContainer.innerHTML = zoekterm === '' ? '' : '<p style="padding:10px;">Geen product gevonden.</p>';
+    }
+  });
+});
+</script>
 </body>
 </html>
