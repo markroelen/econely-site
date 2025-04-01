@@ -192,10 +192,8 @@
             }
           });
         });
-
-        updateTotaal(); // Initiale update uitvoeren
+        updateTotaal();
       });
-
       observer.observe(document.body, { childList: true, subtree: true });
     });
   </script>
@@ -234,7 +232,6 @@
   const form = document.getElementById('bestelform');
   const productenInput = document.getElementById('productenInput');
   const totaalInput = document.getElementById('totaalInput');
-
   const vasteKosten = 6.95;
 
   function getBesteldeProducten() {
