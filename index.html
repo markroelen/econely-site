@@ -1633,6 +1633,24 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (match) {
       resultaatContainer.innerHTML = match;
+      // Koppel checkbox in zoekresultaat aan de originele checkbox
+const resultaatCheckbox = resultaatContainer.querySelector('.product-checkbox');
+const origineelProduct = document.querySelector(`.product[data-id="${zoekterm}"]`);
+const origineleCheckbox = origineelProduct?.querySelector('.product-checkbox');
+
+if (resultaatCheckbox && origineleCheckbox) {
+  // Als je op zoekresultaat klikt
+  resultaatCheckbox.addEventListener('change', () => {
+    origineleCheckbox.checked = resultaatCheckbox.checked;
+    origineleCheckbox.dispatchEvent(new Event('change'));
+  });
+
+  // Als je op originele lijst klikt
+  origineleCheckbox.addEventListener('change', () => {
+    resultaatCheckbox.checked = origineleCheckbox.checked;
+  });
+}
+
 
       activeerProductKlikken();
     } else {
