@@ -1679,6 +1679,12 @@
           const naam = p.querySelector("input").dataset.name.toLowerCase();
           const checkbox = p.querySelector("input[type='checkbox']");
           checkbox.addEventListener("change", updateTotaalprijs);
+          p.addEventListener("click", (e) => {
+  if (e.target.tagName !== "INPUT") {
+    checkbox.checked = !checkbox.checked;
+    updateTotaalprijs();
+  }
+});
 
           if (naam.includes("bakpapier") || naam.includes("cake") || naam.includes("taart") || naam.includes("bakmat") || naam.includes("oven")) {
             document.getElementById("bakken-oven").appendChild(p);
