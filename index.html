@@ -4,14 +4,199 @@
   <meta charset="UTF-8">
   <title>Econely Bestellen</title>
   <style>
-    /* (Stijlen blijven gelijk zoals hierboven, ingekort voor leesbaarheid) */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      color: #314528;
+      background-color: #f9f9f9;
+    }
+
+    h1, h2 {
+      font-size: 1.6em;
+      margin-bottom: 20px;
+      color: #314528;
+    }
+
+    details {
+      margin-bottom: 20px;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      background-color: #ffffff;
+      transition: all 0.3s ease;
+    }
+
+    summary {
+      font-size: 1.2em;
+      font-weight: 600;
+      padding: 15px 20px;
+      background-color: #dfdfdf;
+      color: #314528;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .product {
+      display: flex;
+      flex-direction: row;
+      background: #fff;
+      padding: 15px 20px;
+      border-top: 1px solid #eee;
+      align-items: center;
+      gap: 15px;
+      flex-wrap: wrap;
+      cursor: pointer;
+    }
+
+    .product:hover {
+      background-color: #f0f0f0;
+    }
+
+    .product input[type="checkbox"] {
+      pointer-events: none;
+    }
+
+    .product img {
+      width: 120px;
+      height: auto;
+      border-radius: 8px;
+    }
+
+    .product h4 {
+      font-size: 1.1em;
+      margin: 0 0 5px 0;
+      color: #333;
+    }
+
+    .product p {
+      font-size: 1em;
+      color: #666;
+      margin-bottom: 10px;
+    }
+
+    .totaal {
+      font-size: 1.4em;
+      font-weight: bold;
+      color: #b2935b;
+      margin: 25px 0 15px 0;
+      text-align: center;
+    }
+
+    form {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+      margin-bottom: 30px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    label {
+      font-size: 1em;
+      display: block;
+      margin-bottom: 15px;
+      color: #333;
+    }
+
+    input[type=text], input[type=email] {
+      padding: 14px;
+      width: 100%;
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      margin-top: 5px;
+      font-size: 1em;
+    }
+
+    button {
+      width: 100%;
+      padding: 15px;
+      font-size: 1.1em;
+      background-color: #314528;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      margin-top: 20px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #3f5c36;
+    }
+
+    #stap2 {
+      margin-top: 40px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .button-link {
+      background-color: #0072b1;
+      display: block;
+      width: 100%;
+      padding: 15px;
+      text-align: center;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-size: 1.1em;
+      margin-top: 15px;
+    }
+
+    .button-link:hover {
+      background-color: #005c91;
+    }
+
+    @media (max-width: 768px) {
+      h1, h2 {
+        font-size: 1.4em;
+        text-align: center;
+      }
+
+      .product {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+
+      .product img {
+        width: 90%;
+        max-width: 220px;
+      }
+
+      summary {
+        font-size: 1em;
+        padding: 12px 16px;
+      }
+
+      form, #stap2 {
+        padding: 15px;
+      }
+    }
   </style>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const productDivs = document.querySelectorAll('.product');
+      productDivs.forEach(div => {
+        div.addEventListener('click', function (e) {
+          const checkbox = this.querySelector('input[type="checkbox"]');
+          if (e.target !== checkbox) {
+            checkbox.checked = !checkbox.checked;
+            checkbox.dispatchEvent(new Event('change'));
+          }
+        });
+      });
+    });
+  </script>
 </head>
 <body>
 <h1>Stap 1: Bekijk en stel je Econely keuken samen</h1>
 
-<!-- GEGROEPEERDE PRODUCTEN WORDEN HIER INGELADEN -->
-<!-- Ik genereer ze in een apart bestand om je code overzichtelijk te houden -->
 <script src="producten.js"></script>
 
 <div class="totaal">Totale prijs: €<span id="totaalbedrag">0.00</span></div>
