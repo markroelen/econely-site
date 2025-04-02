@@ -1739,6 +1739,20 @@ if (resultaatCheckbox && origineleCheckbox) {
     window.productData[id] = product.outerHTML;
   });
 </script>
+<script>
+document.querySelectorAll('.product-checkbox').forEach(checkbox => {
+  checkbox.addEventListener('change', () => {
+    const id = checkbox.getAttribute('data-id');
+    const allMatchingCheckboxes = document.querySelectorAll(`.product-checkbox[data-id="${id}"]`);
+    
+    allMatchingCheckboxes.forEach(cb => {
+      if (cb !== checkbox) {
+        cb.checked = checkbox.checked;
+      }
+    });
+  });
+});
+</script>
 
 
 </body>
