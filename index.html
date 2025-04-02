@@ -1714,13 +1714,7 @@ if (resultaatCheckbox && origineleCheckbox) {
   origineleCheckbox.addEventListener('change', () => {
     resultaatCheckbox.checked = origineleCheckbox.checked;
   });
-
-  // ✅ Automatisch aanvinken bij tonen van zoekresultaat
-  origineleCheckbox.checked = true;
-  origineleCheckbox.dispatchEvent(new Event('change'));
-  resultaatCheckbox.checked = true;
 }
-
 
 
       activeerProductKlikken();
